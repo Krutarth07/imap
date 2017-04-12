@@ -8,28 +8,27 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import java.util.ArrayList;
-import java.util.HashMap;
 
 
-public class StudentRepo {
+public class manipulate {
     private DBHelper dbHelper;
     String name,desc;
     int id;
-    public StudentRepo(Context context) {
+    public manipulate(Context context) {
         dbHelper = new DBHelper(context);
     }
 
-    public int insert(Student student) {
+    public int insert(Rows student) {
 
         //Open connection to write data
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         ContentValues values = new ContentValues();
-        values.put(Student.KEY_title, student.title);
-        values.put(Student.KEY_desc,student.desc);
+        values.put(Rows.KEY_title, student.title);
+        values.put(Rows.KEY_desc,student.desc);
 
 
         // Inserting Row
-        long student_Id = db.insert(Student.TABLE, null, values);
+        long student_Id = db.insert(Rows.TABLE, null, values);
         db.close(); // Closing database connection
         return (int) student_Id;
     }
@@ -38,20 +37,20 @@ public class StudentRepo {
 
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         // It's a good practice to use parameter ?, instead of concatenate string
-        db.delete(Student.TABLE, Student.KEY_ID + "= ?", new String[] { String.valueOf(student_Id) });
+        db.delete(Rows.TABLE, Rows.KEY_ID + "= ?", new String[] { String.valueOf(student_Id) });
         db.close(); // Closing database connection
     }
 
-    public void update(Student student) {
+    public void update(Rows student) {
 
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         ContentValues values = new ContentValues();
 
-        values.put(Student.KEY_title, student.title);
-        values.put(Student.KEY_desc,student.desc);
+        values.put(Rows.KEY_title, student.title);
+        values.put(Rows.KEY_desc,student.desc);
 
         // It's a good practice to use parameter ?, instead of concatenate string
-        db.update(Student.TABLE, values, Student.KEY_ID + "= ?", new String[]{String.valueOf(student.student_ID)});
+        db.update(Rows.TABLE, values, Rows.KEY_ID + "= ?", new String[]{String.valueOf(student.student_ID)});
         db.close(); // Closing database connection
     }
 
@@ -59,12 +58,12 @@ public class StudentRepo {
         //Open connection to read only
         SQLiteDatabase db = dbHelper.getReadableDatabase();
         String selectQuery =  "SELECT  " +
-                Student.KEY_title + ","+Student.KEY_ID+ "," + Student.KEY_desc +
+                Rows.KEY_title + ","+ Rows.KEY_ID+ "," + Rows.KEY_desc +
 
-                " FROM " + Student.TABLE;
+                " FROM " + Rows.TABLE;
 
-        //Student student = new Student();
-        ArrayList<String> studentList = new ArrayList<String>();
+        //Rows student = new Rows();
+        ArrayList<String> valuelist = new ArrayList<String>();
 
         Cursor cursor = db.rawQuery(selectQuery, null);
         // looping through all rows and adding to list
@@ -72,20 +71,20 @@ public class StudentRepo {
         if (cursor.moveToFirst()) {
             do {
 
-                id = cursor.getInt(cursor.getColumnIndex(Student.KEY_ID));
-                name = cursor.getString(cursor.getColumnIndex(Student.KEY_title));
-                desc = cursor.getString(cursor.getColumnIndex(Student.KEY_desc));
+                id = cursor.getInt(cursor.getColumnIndex(Rows.KEY_ID));
+                name = cursor.getString(cursor.getColumnIndex(Rows.KEY_title));
+                desc = cursor.getString(cursor.getColumnIndex(Rows.KEY_desc));
 
-                studentList.add(cursor.getString(cursor.getColumnIndex(Student.KEY_title)));
-                studentList.add(cursor.getString(cursor.getColumnIndex(Student.KEY_desc)));
-                studentList.add(cursor.getString(cursor.getColumnIndex(Student.KEY_ID)));
+                valuelist.add(cursor.getString(cursor.getColumnIndex(Rows.KEY_title)));
+                valuelist.add(cursor.getString(cursor.getColumnIndex(Rows.KEY_desc)));
+                valuelist.add(cursor.getString(cursor.getColumnIndex(Rows.KEY_ID)));
 
             } while (cursor.moveToNext());
         }
 
         cursor.close();
         db.close();
-        return studentList;
+        return valuelist;
 
     }
 
@@ -96,12 +95,12 @@ public class StudentRepo {
         //Open connection to read only
         SQLiteDatabase db = dbHelper.getReadableDatabase();
         String selectQuery =  "SELECT  " +
-                Student.KEY_title + ","+Student.KEY_ID+
+                Rows.KEY_title + ","+Rows.KEY_ID+
 
-                " FROM " + Student.TABLE + " WHERE " +Student.KEY_ID + " = " + Id ;
+                " FROM " + Rows.TABLE + " WHERE " +Rows.KEY_ID + " = " + Id ;
 
-        //Student student = new Student();
-        ArrayList<HashMap<String, String>> studentList = new ArrayList<HashMap<String, String>>();
+        //Rows student = new Rows();
+        ArrayList<HashMap<String, String>> valuelist = new ArrayList<HashMap<String, String>>();
 
         Cursor cursor = db.rawQuery(selectQuery, null);
         // looping through all rows and adding to list
@@ -109,15 +108,15 @@ public class StudentRepo {
         if (cursor.moveToFirst()) {
             do {
 
-                id = cursor.getInt(cursor.getColumnIndex(Student.KEY_ID));
-                name = cursor.getString(cursor.getColumnIndex(Student.KEY_title));
+                id = cursor.getInt(cursor.getColumnIndex(Rows.KEY_ID));
+                name = cursor.getString(cursor.getColumnIndex(Rows.KEY_title));
 
             } while (cursor.moveToNext());
         }
 
         cursor.close();
         db.close();
-        return studentList;
+        return valuelist;
 
     }
 

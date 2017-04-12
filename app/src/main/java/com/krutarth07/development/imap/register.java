@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.app.Application;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -59,11 +58,11 @@ public class register extends Activity {
 
                 List<String> l = new ArrayList<String>();
 
-                StudentRepo repo = new StudentRepo(register.this);
-                Student student = new Student();
-                student.title= name.getText().toString();
-                student.desc=desc.getText().toString();
-                _Student_Id = repo.insert(student);
+                manipulate repo = new manipulate(register.this);
+                Rows rows = new Rows();
+                rows.title= name.getText().toString();
+                rows.desc=desc.getText().toString();
+                _Student_Id = repo.insert(rows);
 
                 l=repo.getStudentList();
                 //repo.getStudentList();        //................................for the one entered

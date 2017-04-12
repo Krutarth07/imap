@@ -2,9 +2,9 @@ package com.krutarth07.development.imap;
 
 /**
  * Created by Krutarth on 02-06-2016.
- */public class Student {
+ */public class Rows {
     // Labels table name
-    public static final String TABLE = "Student";
+    public static final String TABLE = "Rows";
 
     // Labels Table Columns names
     public static final String KEY_ID = "id";
