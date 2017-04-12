@@ -27,6 +27,7 @@
         <activity android:name=".geomap">
 
         </activity>
+
         <activity android:name=".register">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

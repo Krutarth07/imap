@@ -11,7 +11,7 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
-import com.squareup.leakcanary.LeakCanary;
+//import com.squareup.leakcanary.LeakCanary;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,12 +28,13 @@ public class register extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
-        if (LeakCanary.isInAnalyzerProcess(this)) {
+     //   if (LeakCanary.isInAnalyzerProcess(this)) {
             // This process is dedicated to LeakCanary for heap analysis.
             // You should not init your app in this process.
-            return;
-        }
-        LeakCanary.install((Application) getApplicationContext());
+       //     return;
+       // }
+
+       // LeakCanary.install((Application) getApplicationContext());
 
         marker = (Button)findViewById(R.id.marker);
         name = (EditText)findViewById(R.id.ename);
@@ -58,20 +59,20 @@ public class register extends Activity {
 
                 List<String> l = new ArrayList<String>();
 
-                manipulate repo = new manipulate(register.this);
-                Rows rows = new Rows();
-                rows.title= name.getText().toString();
-                rows.desc=desc.getText().toString();
-                _Student_Id = repo.insert(rows);
+                //manipulate repo = new manipulate(register.this);
+                //Rows rows = new Rows();
+                //rows.title= name.getText().toString();
+                //rows.desc=desc.getText().toString();
+                //_Student_Id = repo.insert(rows);
 
-                l=repo.getStudentList();
+                //l=repo.getStudentList();
                 //repo.getStudentList();        //................................for the one entered
                 //repo.getStudentList(16);       //...............................for specific id
 
-                Toast.makeText(register.this, repo.id+repo.name+repo.desc, Toast.LENGTH_SHORT).show();
+                Toast.makeText(register.this, n+" "+d, Toast.LENGTH_SHORT).show();
 
                 //  for(int j=0;j<l.size();j++){
-                //    Toast.makeText(register.this, l.get(j), Toast.LENGTH_SHORT).show();
+                //    Toast.make    Text(register.this, l.get(j), Toast.LENGTH_SHORT).show();
                 //}
 
 

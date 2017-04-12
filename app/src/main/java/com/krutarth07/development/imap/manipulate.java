@@ -8,6 +8,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 
 public class manipulate {
@@ -23,8 +24,8 @@ public class manipulate {
         //Open connection to write data
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         ContentValues values = new ContentValues();
-        values.put(Rows.KEY_title, student.title);
-        values.put(Rows.KEY_desc,student.desc);
+        values.put(Rows.title, student.title);
+        values.put(Rows.desc,student.desc);
 
 
         // Inserting Row
@@ -37,7 +38,7 @@ public class manipulate {
 
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         // It's a good practice to use parameter ?, instead of concatenate string
-        db.delete(Rows.TABLE, Rows.KEY_ID + "= ?", new String[] { String.valueOf(student_Id) });
+        db.delete(Rows.TABLE, Rows.id + "= ?", new String[] { String.valueOf(student_Id) });
         db.close(); // Closing database connection
     }
 
@@ -46,19 +47,19 @@ public class manipulate {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         ContentValues values = new ContentValues();
 
-        values.put(Rows.KEY_title, student.title);
-        values.put(Rows.KEY_desc,student.desc);
+        values.put(Rows.title, student.title);
+        values.put(Rows.desc,student.desc);
 
         // It's a good practice to use parameter ?, instead of concatenate string
-        db.update(Rows.TABLE, values, Rows.KEY_ID + "= ?", new String[]{String.valueOf(student.student_ID)});
+        db.update(Rows.TABLE, values, Rows.id + "= ?", new String[]{String.valueOf(student.id)});
         db.close(); // Closing database connection
     }
 
-    public ArrayList<String> getStudentList() {
+  /*  public ArrayList<String> getStudentList() {
         //Open connection to read only
         SQLiteDatabase db = dbHelper.getReadableDatabase();
         String selectQuery =  "SELECT  " +
-                Rows.KEY_title + ","+ Rows.KEY_ID+ "," + Rows.KEY_desc +
+                Rows.title + ","+ Rows.id+ "," + Rows.desc +
 
                 " FROM " + Rows.TABLE;
 
@@ -71,13 +72,13 @@ public class manipulate {
         if (cursor.moveToFirst()) {
             do {
 
-                id = cursor.getInt(cursor.getColumnIndex(Rows.KEY_ID));
-                name = cursor.getString(cursor.getColumnIndex(Rows.KEY_title));
-                desc = cursor.getString(cursor.getColumnIndex(Rows.KEY_desc));
+                //id = cursor.getInt(cursor.getColumnIndex(Rows.KEY_ID));
+                name = cursor.getString(cursor.getColumnIndex(Rows.title));
+                desc = cursor.getString(cursor.getColumnIndex(Rows.desc));
 
-                valuelist.add(cursor.getString(cursor.getColumnIndex(Rows.KEY_title)));
-                valuelist.add(cursor.getString(cursor.getColumnIndex(Rows.KEY_desc)));
-                valuelist.add(cursor.getString(cursor.getColumnIndex(Rows.KEY_ID)));
+                valuelist.add(cursor.getString(cursor.getColumnIndex(Rows.title)));
+                valuelist.add(cursor.getString(cursor.getColumnIndex(Rows.desc)));
+                //valuelist.add(cursor.getString(cursor.getColumnIndex(Rows.KEY_ID)));
 
             } while (cursor.moveToNext());
         }
@@ -87,39 +88,61 @@ public class manipulate {
         return valuelist;
 
     }
+*/
 
 
 
-/*
-    public ArrayList<HashMap<String, String>>  getStudentList(int Id) {
+    public String getname(int Id) {
         //Open connection to read only
         SQLiteDatabase db = dbHelper.getReadableDatabase();
-        String selectQuery =  "SELECT  " +
-                Rows.KEY_title + ","+Rows.KEY_ID+
-
-                " FROM " + Rows.TABLE + " WHERE " +Rows.KEY_ID + " = " + Id ;
+        String selectQuery =  "SELECT title FROM " + Rows.TABLE + " WHERE " +Rows.id + " = " + Id ;
 
         //Rows student = new Rows();
-        ArrayList<HashMap<String, String>> valuelist = new ArrayList<HashMap<String, String>>();
+      //  ArrayList<HashMap<String, String>> valuelist = new ArrayList<HashMap<String, String>>();
 
         Cursor cursor = db.rawQuery(selectQuery, null);
         // looping through all rows and adding to list
 
-        if (cursor.moveToFirst()) {
-            do {
+       // if (cursor.moveToFirst()) {
+         //   do {
 
-                id = cursor.getInt(cursor.getColumnIndex(Rows.KEY_ID));
-                name = cursor.getString(cursor.getColumnIndex(Rows.KEY_title));
+           //     id = cursor.getInt(cursor.getColumnIndex(Rows.id));
+                name = cursor.getString(cursor.getColumnIndex(Rows.title));
 
-            } while (cursor.moveToNext());
-        }
+            //} while (cursor.moveToNext());
+        //}
 
         cursor.close();
         db.close();
-        return valuelist;
+        return name;
 
     }
 
-*/
+    public String getdesc(int Id) {
+        //Open connection to read only
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+        String selectQuery =  "SELECT desc FROM " + Rows.TABLE + " WHERE " +Rows.id + " = " + Id ;
+
+        //Rows student = new Rows();
+        //ArrayList<HashMap<String, String>> valuelist = new ArrayList<HashMap<String, String>>();
+
+        Cursor cursor = db.rawQuery(selectQuery, null);
+        // looping through all rows and adding to list
+
+        //if (cursor.moveToFirst()) {
+          //  do {
+
+                desc = cursor.getString(cursor.getColumnIndex(Rows.desc));
+            //    name = cursor.getString(cursor.getColumnIndex(Rows.title));
+
+            //} while (cursor.moveToNext());
+       // }
+
+     //   cursor.close();
+        db.close();
+        return desc;
+
+    }
+
 
 }

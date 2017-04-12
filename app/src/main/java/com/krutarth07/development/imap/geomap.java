@@ -29,11 +29,12 @@ import java.util.List;
 
 public class geomap extends AppCompatActivity implements View.OnClickListener {
 
+    int id;
     double longi, lati;
     SharedPreferences sharedPreferences;
     SharedPreferences prefsname;
 
-    int locationCount = 0;
+    int locationCount = -1;
     private GoogleMap googleMap;
     private GoogleMap.OnMyLocationChangeListener myLocationChangeListener = new GoogleMap.OnMyLocationChangeListener() {
         @Override
@@ -105,7 +106,7 @@ public class geomap extends AppCompatActivity implements View.OnClickListener {
                 String lng = "";
 
                 // Iterating through all the locations stored
-                for (int i = 0; i < locationCount; i++) {
+                for (int i = 0; i <=locationCount; i++) {
 
                     // Getting the latitude of the i-th location
                     lat = sharedPreferences.getString("lat" + i, "0");
@@ -116,17 +117,26 @@ public class geomap extends AppCompatActivity implements View.OnClickListener {
 
                     // Drawing marker on the map
                     // latitude and longitude
-                    drawMarker(new LatLng(Double.parseDouble(lat), Double.parseDouble(lng)));
+                    drawMarker(new LatLng(Double.parseDouble(lat), Double.parseDouble(lng)),i);
                 }
             }
             googleMap.setOnMapLongClickListener(new GoogleMap.OnMapLongClickListener() {
 
                 @Override
                 public void onMapLongClick(LatLng point) {
-                    locationCount++;
 
                     // Drawing marker on the map
-                    drawMarker(point);
+
+                    locationCount++;
+
+                    drawMarker(point,locationCount);
+
+                    manipulate repo = new manipulate(geomap.this);
+                    Rows rows = new Rows();
+                    rows.title=prefsname.getString("name","");
+                    rows.desc=prefsname.getString("desc","");
+                    rows.id= String.valueOf(locationCount);
+                    id = repo.insert(rows);
 
                     /** Opening the editor object to write data to sharedPreferences */
                     SharedPreferences.Editor editor = sharedPreferences.edit();
@@ -141,6 +151,8 @@ public class geomap extends AppCompatActivity implements View.OnClickListener {
                     editor.putInt("locationCount", locationCount);
 
                     editor.commit();
+
+
 
                     Toast.makeText(getBaseContext(), "Marker is added to the Map", Toast.LENGTH_SHORT).show();
 
@@ -172,8 +184,15 @@ public class geomap extends AppCompatActivity implements View.OnClickListener {
 
                     String title,desc;
 
-                    title=prefsname.getString("name","");
-                    desc=prefsname.getString("desc","");
+                    //title=prefsname.getString("name","");
+                    //desc=prefsname.getString("desc","");
+
+                    manipulate repo = new manipulate(geomap.this);
+                    String fetchname = repo.getname(locationCount);
+                    String fetchdesc = repo.getdesc(locationCount);
+
+                    title=fetchname;
+                    desc=fetchdesc;
 
                     ti.setText(title);
 
@@ -273,7 +292,7 @@ public class geomap extends AppCompatActivity implements View.OnClickListener {
 
     }
 
-    private void drawMarker(LatLng point) {
+    private void drawMarker(LatLng point,int id) {
 
         SharedPreferences prefs = getSharedPreferences("names", MODE_PRIVATE);
 
@@ -281,7 +300,12 @@ public class geomap extends AppCompatActivity implements View.OnClickListener {
         // Creating an instance of MarkerOptions
         MarkerOptions markerOptions = new MarkerOptions();
 
-        markerOptions.position(point).title(prefs.getString("name", ""));
+        String title,desc;
+
+        manipulate repo = new manipulate(geomap.this);
+        title=repo.getname(id);
+
+        markerOptions.position(point).title(title);
 
         Marker mar = googleMap.addMarker(markerOptions);
         // Adding marker on the Google Map
